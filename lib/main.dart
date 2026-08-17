@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 void main(){
   const check = String.fromEnvironment('GIPHY_API_KEY');
-  print(check.length);
+  print("Key length: ${check.length}");
   runApp(const GifApp());
 } 
 
@@ -17,12 +17,12 @@ class GifApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Explore Giphy",
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 180, 144, 243),
+        backgroundColor: Color.fromARGB(255, 156, 122, 213),
       ),
     );
   }
 }
 
 Future<void> testCall() async {
-  var uri = Uri.https(authority)
+  //var uri = Uri.https(authority)
 }
