@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gif_app/data/gif_page.dart';
 import 'package:gif_app/data/gif_repository.dart';
 import 'package:gif_app/data/giphy_api_client.dart';
-import 'package:gif_app/data/models/gif.dart';
 
 void main() {
   runApp(const GifApp());
@@ -38,9 +36,5 @@ Future<void> testApi() async {
   final apiClient = GiphyApiClient();
 
   final gifRepo = GifRepository(apiClient: apiClient);
-  final page = await gifRepo.getGifs("code", limit: 5, offset: 10);
-  print('Length: ${page.gifs.length} | Offset: ${page.offset}');
-  print(page.gifs[0].title);
-
+  final page = await gifRepo.getGifs("chili", limit: 1, offset: 0);
 }
-
