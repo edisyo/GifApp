@@ -1,40 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:gif_app/data/gif_repository.dart';
 import 'package:gif_app/data/giphy_api_client.dart';
+import 'package:gif_app/presentation/search_page.dart';
 
 void main() {
-  runApp(const GifApp());
+  final apiClient = GiphyApiClient();
+  final gifRepository = GifRepository(apiClient: apiClient);
+
+  runApp(GifApp(repository: gifRepository));
 }
 
 class GifApp extends StatelessWidget {
-  const GifApp({super.key});
+  final GifRepository repository;
+
+  const GifApp({super.key, required this.repository});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Explore Giphy",
-      home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 156, 122, 213),
-        appBar: AppBar(
-          title: Text('Testing'),
-          backgroundColor: Colors.deepPurpleAccent,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: testApi,
-          backgroundColor: Colors.deepPurpleAccent,
-          hoverColor: Colors.deepOrange,
-          focusColor: Colors.blue,
-          child: const Icon(Icons.search),
-        ),
-      ),
+      home: SearchPage(repository: repository)
     );
   }
-}
-
-Future<void> testApi() async {
-  final apiClient = GiphyApiClient();
-
-  final gifRepo = GifRepository(apiClient: apiClient);
-  final page = await gifRepo.getGifs("chili", limit: 1, offset: 0);
 }
