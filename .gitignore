@@ -46,3 +46,5 @@ app.*.map.json
 
 #Ignore API file
 /env/giphy.json
+# Widget Preview related
+.widget_preview/
