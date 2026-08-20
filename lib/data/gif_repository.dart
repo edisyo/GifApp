@@ -19,7 +19,8 @@ class GifRepository {
     } on ClientException catch (e) {
       throw NetworkException("No response from API host. $e");
     } on ApiException{
-      rethrow;  //can continue further since it returns an API response
+      // already our type — rethrow keeps the original stack trace
+      rethrow;
     } catch (e){
       // throws either TypeError or FormatError - catch all
       throw ParseException("Couldnt parse JSON", cause: e);

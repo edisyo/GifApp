@@ -22,7 +22,7 @@ class GifPage {
 
   factory GifPage.fromJson(Map<String, dynamic> json) {
     // pulls pagination block into a variable - Map
-    final pagination = json['paginationnn'] as Map<String, dynamic>;
+    final pagination = json['pagination'] as Map<String, dynamic>;
 
     // returns a value of 'total_count' key
     final totalCount = pagination['total_count'] as int;
