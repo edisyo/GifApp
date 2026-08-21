@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gif_app/data/gif_repository.dart';
 import 'package:gif_app/data/giphy_api_client.dart';
-import 'package:gif_app/presentation/search_page.dart';
+import 'package:gif_app/screens/search_page.dart';
 
 void main() {
   final apiClient = GiphyApiClient();
