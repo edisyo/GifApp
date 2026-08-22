@@ -20,7 +20,7 @@ class GifApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Explore Giphy",
-      home: SearchPage(repository: repository)
+      home: SearchPage(repository: repository),
     );
   }
 }
