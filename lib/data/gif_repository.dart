@@ -9,19 +9,24 @@ class GifRepository {
 
   GifRepository({required this._apiClient});
 
-  Future<GifPage> getGifs(String query, {int limit = 25, int offset = 0,}) async {
+  Future<GifPage> getGifs(
+    String query, {
+    int limit = 25,
+    int offset = 0,
+  }) async {
     try {
       final decodedCall = await _apiClient.search(
-      query, 
-      limit: limit, 
-      offset: offset);
+        query,
+        limit: limit,
+        offset: offset,
+      );
       return GifPage.fromJson(decodedCall);
     } on ClientException catch (e) {
       throw NetworkException("No response from API host. $e");
-    } on ApiException{
+    } on ApiException {
       // already our type — rethrow keeps the original stack trace
       rethrow;
-    } catch (e){
+    } catch (e) {
       // throws either TypeError or FormatError - catch all
       throw ParseException("Couldnt parse JSON", cause: e);
     }
