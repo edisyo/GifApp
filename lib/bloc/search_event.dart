@@ -18,6 +18,4 @@ final class SearchQueryChanged extends SearchEvent {
 
 final class NextPageRequested extends SearchEvent {
   const NextPageRequested();
-
-  
 }

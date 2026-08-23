@@ -21,6 +21,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   // Text Field controller
   final _textEditingController = TextEditingController();
+  final _scrollController = ScrollController();
 
   // Query timer
   Timer? _debounce;
@@ -31,8 +32,7 @@ class _SearchPageState extends State<SearchPage> {
     //parent's setup first
     super.initState();
 
-    // Trigger search on app startup
-    //_gifsFuture = widget.repository.getGifs('chili', limit: 25, offset: 0);
+    _scrollController.addListener(_onScroll);
   }
 
   // Triggers when the State is destroyed - closing the app, hot restart
@@ -41,6 +41,7 @@ class _SearchPageState extends State<SearchPage> {
     // Cleanup here
     _debounce?.cancel();
     _textEditingController.dispose();
+    _scrollController.dispose();
 
     // Parents Dispose last!
     super.dispose();
@@ -58,6 +59,14 @@ class _SearchPageState extends State<SearchPage> {
       context.read<SearchBloc>().add(SearchQueryChanged(query));
     });
   }
+
+  void _onScroll(){
+    var position = _scrollController.position;
+    var diff = position.maxScrollExtent - position.pixels;
+
+    if(diff  < 200) context.read<SearchBloc>().add(NextPageRequested());
+  }
+  
 
   // runs when something changes
   @override
@@ -124,6 +133,7 @@ class _SearchPageState extends State<SearchPage> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: GridView.builder(
+              controller: _scrollController,
               itemCount: state.gifs.length,
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 150,
@@ -137,6 +147,9 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
         ),
+
+        // Load Next Page Spinner
+        if(state.isLoadingMore) const CircularProgressIndicator.adaptive(),
       ], // Children
     );
   }
