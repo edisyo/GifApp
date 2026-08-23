@@ -1,14 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:gif_app/data/gif_page.dart';
-import 'package:gif_app/data/gif_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gif_app/bloc/search_bloc.dart';
+import 'package:gif_app/bloc/search_event.dart';
+import 'package:gif_app/bloc/search_state.dart';
 
 // Widget Class
 class SearchPage extends StatefulWidget {
   // variables, that gets passed from outside and used inside the widget
-  final GifRepository repository;
-  const SearchPage({super.key, required this.repository});
+  //edit final GifRepository repository;
+  const SearchPage({super.key});
 
   // Create a state
   @override
@@ -17,9 +19,6 @@ class SearchPage extends StatefulWidget {
 
 // State class
 class _SearchPageState extends State<SearchPage> {
-  // declare what needs to survive widget rebuilds - memory
-  Future<GifPage>? _gifsFuture;
-
   // Text Field controller
   final _textEditingController = TextEditingController();
 
@@ -49,27 +48,14 @@ class _SearchPageState extends State<SearchPage> {
 
   // Runs when text inside TexField changes
   void _onQueryChanged(String query) {
-    print('Query changed - ${query}');
+    print('Query changed - $query');
 
     // Cancel existing timers, user still typing
     _debounce?.cancel();
 
     // User paused - trigger the search!
     _debounce = Timer(Duration(milliseconds: 750), () {
-      if (query.isEmpty) {
-        // Tells Widget to rebuild it.
-        // Since in body there is _gifsFuture ? empty : grid.
-        // This will change the screen back to an empty Screen
-        setState(() {
-          _gifsFuture = null;
-        });
-        return;
-      }
-
-      //fire the search
-      setState(() {
-        _gifsFuture = widget.repository.getGifs(query);
-      });
+      context.read<SearchBloc>().add(SearchQueryChanged(query));
     });
   }
 
@@ -88,67 +74,70 @@ class _SearchPageState extends State<SearchPage> {
         ),
         toolbarHeight: 70,
       ),
-      body: _gifsFuture == null
-          ? _showEmptyPage('No GIFs to show.\nUse the search box!')
-          : _showGrid(),
+      body: _buildBlocStates(),
     );
   }
 
-  Widget _showEmptyPage(String message) => Center(child: Text(message));
-
-  Widget _showGrid() {
-    return FutureBuilder<GifPage>(
-      future: _gifsFuture!,
-      builder: (context, snapshot) {
-        // 1. still waiting
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          //show "Loading data..."
-          return Text("Loading data");
-        }
-
-        // 2. did it throw?
-        if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}");
-        }
-
-        // Check if results are not empty - no gifs for query
-        if (snapshot.data!.gifs.isEmpty) {
-          print("Empty query!");
-          return _showEmptyPage('No GIFs found.\nTry another keyword!');
-        } else {
-          print("show grid!");
-          return Column(
-            children: [
-              // Results Label on top
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Text(
-                  'Showing ${snapshot.data!.count} out of ${snapshot.data!.totalCount} results for ${_textEditingController.text}',
-                ),
-              ),
-
-              // 3. otherwise, show data - the grid
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridView.builder(
-                    itemCount: snapshot.data!.gifs.length,
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 150,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemBuilder: (context, index) {
-                      final gif = snapshot.data!.gifs[index];
-                      return Image.network(gif.previewUrl, fit: BoxFit.cover);
-                    },
-                  ),
-                ),
-              ),
-            ], // Children
-          );
-        }
+  Widget _buildBlocStates() {
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return switch (state) {
+          SearchStateInitial() => _showSearchStateInitial(),
+          SearchStateLoading() => _showSearchStateLoading(),
+          SearchStateEmpty() => _showSearchStateEmpty(state),
+          SearchStateError() => _showSearchStateError(state),
+          SearchStateLoaded() => _showSearchStateLoaded(state),
+        };
       },
+    );
+  }
+
+  Widget _showSearchStateInitial() {
+    return const Text('Use Search box to find GIFs!');
+  }
+
+  Widget _showSearchStateLoading() {
+    return const CircularProgressIndicator.adaptive();
+  }
+
+  Widget _showSearchStateEmpty(SearchStateEmpty state) {
+    return Text('No results for ${state.query}\nTry another keyword!');
+  }
+
+  Widget _showSearchStateError(SearchStateError state) {
+    return Text('Error: ${state.error}');
+  }
+
+  Widget _showSearchStateLoaded(SearchStateLoaded state) {
+    return Column(
+      children: [
+        // Results Label on top
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Text(
+            'Showing ${state.gifs.length} out of ${state.totalCount} results for ${state.query}',
+          ),
+        ),
+
+        // 3. otherwise, show data - the grid
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GridView.builder(
+              itemCount: state.gifs.length,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 150,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemBuilder: (context, index) {
+                final gif = state.gifs[index];
+                return Image.network(gif.previewUrl, fit: BoxFit.cover);
+              },
+            ),
+          ),
+        ),
+      ], // Children
     );
   }
 }
