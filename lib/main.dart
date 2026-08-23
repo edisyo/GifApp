@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gif_app/bloc/search_bloc.dart';
 import 'package:gif_app/data/gif_repository.dart';
 import 'package:gif_app/data/giphy_api_client.dart';
 import 'package:gif_app/screens/search_page.dart';
@@ -20,7 +22,10 @@ class GifApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Explore Giphy",
-      home: SearchPage(repository: repository),
+      home: BlocProvider(
+        create: (_) => SearchBloc(repository),
+        child: SearchPage(),
+      ),
     );
   }
 }

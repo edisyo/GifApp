@@ -1,15 +1,20 @@
-class Gif {
-  final String id;
-  final String title;
-  final String previewUrl;
-  final String fullUrl;
+import 'package:equatable/equatable.dart';
 
+class Gif extends Equatable {
   const Gif({
     required this.id,
     required this.title,
     required this.previewUrl,
     required this.fullUrl,
   });
+
+  final String id;
+  final String title;
+  final String previewUrl;
+  final String fullUrl;
+
+  @override
+  List<Object> get props => [id];
 
   factory Gif.fromJson(Map<String, dynamic> json) {
     final images = json['images'] as Map<String, dynamic>?;
