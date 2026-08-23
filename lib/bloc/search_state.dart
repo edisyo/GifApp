@@ -27,14 +27,20 @@ final class SearchStateLoaded extends SearchState {
     required this.gifs,
     required this.query,
     required this.totalCount,
+    required this.offset,
+    this.isLoadingMore = false,
+    this.hasReachedEnd = false
   });
 
   final List<Gif> gifs;
   final String query;
   final int totalCount;
+  final int offset;
+  final bool isLoadingMore;
+  final bool hasReachedEnd;
 
   @override
-  List<Object> get props => [gifs, query, totalCount];
+  List<Object> get props => [gifs, query, totalCount, offset, isLoadingMore, hasReachedEnd];
 }
 
 // empty response

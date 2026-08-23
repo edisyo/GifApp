@@ -15,3 +15,9 @@ final class SearchQueryChanged extends SearchEvent {
   @override
   List<Object?> get props => [query];
 }
+
+final class NextPageRequested extends SearchEvent {
+  const NextPageRequested();
+
+  
+}
