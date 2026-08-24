@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gif_app/bloc/search_bloc.dart';
 import 'package:gif_app/data/gif_repository.dart';
 import 'package:gif_app/data/giphy_api_client.dart';
-import 'package:gif_app/screens/search_page.dart';
+import 'package:gif_app/navigation/app_router.dart';
 
 void main() {
   final apiClient = GiphyApiClient();
@@ -19,13 +19,13 @@ class GifApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Explore Giphy",
-      home: BlocProvider(
-        create: (_) => SearchBloc(repository),
-        child: SearchPage(),
-      ),
-    );
+    return BlocProvider(
+      create:(_) => SearchBloc(repository),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: "Explore Giphy",
+        routerConfig: goRouter
+      )
+    ); 
   }
 }

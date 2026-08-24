@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gif_app/bloc/search_bloc.dart';
 import 'package:gif_app/bloc/search_event.dart';
 import 'package:gif_app/bloc/search_state.dart';
+import 'package:gif_app/data/models/gif.dart';
+import 'package:go_router/go_router.dart';
 
 // Widget Class
 class SearchPage extends StatefulWidget {
@@ -65,6 +67,10 @@ class _SearchPageState extends State<SearchPage> {
     var diff = position.maxScrollExtent - position.pixels;
 
     if(diff  < 200) context.read<SearchBloc>().add(NextPageRequested());
+  }
+
+  void _onImageTap(Gif gif){
+    context.push('/gif', extra: gif);
   }
   
 
@@ -142,7 +148,10 @@ class _SearchPageState extends State<SearchPage> {
               ),
               itemBuilder: (context, index) {
                 final gif = state.gifs[index];
-                return Image.network(gif.previewUrl, fit: BoxFit.cover);
+                return InkWell(
+                  onTap: () => _onImageTap(gif),
+                  child: Image.network(gif.previewUrl, fit: BoxFit.cover)
+                );
               },
             ),
           ),
