@@ -6,7 +6,7 @@ import 'package:gif_app/bloc/search_bloc.dart';
 import 'package:gif_app/bloc/search_event.dart';
 import 'package:gif_app/bloc/search_state.dart';
 import 'package:gif_app/data/models/gif.dart';
-import 'package:gif_app/screens/detail_page.dart';
+import 'package:go_router/go_router.dart';
 
 // Widget Class
 class SearchPage extends StatefulWidget {
@@ -70,12 +70,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _onImageTap(Gif gif){
-    Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => DetailPage(gif: gif)
-      )
-    );
+    context.push('/gif', extra: gif);
   }
   
 
