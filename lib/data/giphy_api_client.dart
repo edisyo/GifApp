@@ -8,6 +8,7 @@ class GiphyApiClient {
   static const _apiHost = 'api.giphy.com';
   static const _apiPath = '/v1/gifs/search';
 
+  // Using Giphys Search endpoint
   Future<Map<String, dynamic>> search(
     String query, {
     int limit = 25,
@@ -47,4 +48,45 @@ class GiphyApiClient {
 
     return decoded;
   }
+
+static const _apiTrendingPath = '/v1/gifs/trending';
+// Using Giphys Trending endpoint
+  Future<Map<String, dynamic>> trending({
+    int limit = 25,
+    int offset = 0,
+  }) async {
+    debugPrint('Calling the trending API...');
+
+    final uri = Uri.https(_apiHost, _apiTrendingPath, {
+      'api_key': _giphyApiKey,
+      'limit': limit.toString(),
+      'offset': offset.toString(),
+    });
+
+    // the API Call it self
+    final response = await http.get(uri);
+
+    // API call returned JSON
+    final body = response.body;
+
+    // API Call status code and message
+    final statusCode = response.statusCode;
+    final statusMsg = jsonDecode(body)['meta']['msg'];
+    debugPrint('API return code: $statusCode - $statusMsg');
+
+    // Catch a bad API response. 200 is Ok.
+    if (statusCode != 200) {
+      throw ApiException(
+        'Connection with ${_apiHost + _apiTrendingPath} has failed',
+        statusCode: statusCode,
+        statusMsg: statusMsg,
+      );
+    }
+
+    // Decode whole JSON into a MAP - {data, meta, pagination}
+    final decoded = jsonDecode(body);
+
+    return decoded;
+  }
+
 }
