@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gif_app/bloc/search_bloc.dart';
 import 'package:gif_app/data/gif_repository.dart';
 import 'package:gif_app/data/giphy_api_client.dart';
 import 'package:gif_app/navigation/app_router.dart';
@@ -19,8 +18,8 @@ class GifApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:(_) => SearchBloc(repository),
+    return RepositoryProvider(
+      create:(_) => repository,
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: "Explore Giphy",
