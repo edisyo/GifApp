@@ -13,7 +13,16 @@ class _TrendingPageState extends State<TrendingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Trending')),
+      appBar: AppBar(
+        title: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Trending'),
+            Text('Powered by GIPHY', style: TextStyle(fontSize: 11)),
+          ],
+        ),
+      ),
       body: const GifGridView(),
     );
   }

@@ -26,20 +26,26 @@ class ApiException implements Exception {
 
 // The request never completed - no connection or other network issue
 class NetworkException implements Exception {
+  const NetworkException(this.message);
   final String message;
 
   // tried to connect to which host
-  final Uri? uri;
+  //final Uri? uri;
 
-  const NetworkException(this.message, {this.uri});
+  //const NetworkException(this.message, {this.uri});
 
-  @override
+  /*@override
   String toString() {
     if (uri != null) {
       return 'NetworkException: $message, uri=$uri';
     } else {
       return 'NetworkException: $message';
     }
+  }*/
+
+  @override
+  String toString() {
+    return 'NetworkException: $message';
   }
 }
 

@@ -36,7 +36,14 @@ class DetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('GIF Details'),
+        title: const Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('GIF Details'),
+            Text('Powered by GIPHY', style: TextStyle(fontSize: 11)),
+          ],
+        ),
       ),
       body: Column(
         mainAxisAlignment: .start,

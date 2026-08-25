@@ -57,7 +57,8 @@ class _SearchPageState extends State<SearchPage> {
         title: TextField(
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'What GIF you want to see?',
+            hintText: 'Powered By GIPHY',
+            prefixIcon: Icon(Icons.search)
           ),
           controller: _textEditingController,
           onChanged: _onQueryChanged,

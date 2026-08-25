@@ -42,7 +42,7 @@ class GifRepository {
       final decodedCall = await _apiClient.trending(limit: limit, offset: offset);
       return GifPage.fromJson(decodedCall);
     } on ClientException catch (e) {
-      throw NetworkException("No response from API host. $e");
+      throw NetworkException("No response from API host.");
     } on ApiException {
       // already our type — rethrow keeps the original stack trace
       rethrow;
