@@ -19,12 +19,17 @@ for version control used Git
 	"GIPHY_API_KEY": "place_your_key_here"
 }
 ```
-5. Then open `launch.json` and add at the end of each configuration this line 
+5. Run project from terminal: 
    ```dart
+   flutter run --dart-define-from-file=env/giphy.json
+   ```
+6. Optional - if project is opened with VS Code and ran with VS Code debugger (F5) 
+	1. Add this line to each configuration in `.vscode/launch.json`.
+   ```json
    "toolArgs": ["--dart-define-from-file=env/giphy.json"]
    ```
-   So the configuration looks like this:
-   ```dart
+	So the configuration looks like this:
+   ```json
    {
 	   "name": "gif_app",
 	   "request": "launch",
