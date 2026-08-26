@@ -9,26 +9,26 @@ for version control used Git
 
 1. Get GIPHY's API key (not SDK) here - https://developers.giphy.com/dashboard/?create=true
 2. Clone this repository
-3. Open it in VS Code
-4. Create a `giphy.json` in `env` folder
+3. Create a `giphy.json` in `env` folder
 	1. Look at the example inside `env`
 	2. Copy and paste into `giphy.json`
 	3. Replace the placeholder with your key
-```dart
+```json
 {
 	"GIPHY_API_KEY": "place_your_key_here"
 }
 ```
-5. Run project from terminal: 
-   ```dart
+4. Run project from terminal: 
+   ```bash
    flutter run --dart-define-from-file=env/giphy.json
    ```
-6. Optional - if project is opened with VS Code and ran with VS Code debugger (F5) 
+5. Optional - if project is opened with VS Code and ran with VS Code debugger (F5) 
 	1. Add this line to each configuration in `.vscode/launch.json`.
    ```json
    "toolArgs": ["--dart-define-from-file=env/giphy.json"]
    ```
-	So the configuration looks like this:
+	
+	So the configuration looks like this.
    ```json
    {
 	   "name": "gif_app",
