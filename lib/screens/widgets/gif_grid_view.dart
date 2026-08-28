@@ -66,20 +66,20 @@ class _GifGridViewState extends State<GifGridView> {
     );
   }
 
-    Widget _showSearchStateInitial() {
-    return const Text('Use Search box to find GIFs!');
+  Widget _showSearchStateInitial() {
+    return Center(child: const Text('Use Search box to find GIFs!'));
   }
 
   Widget _showSearchStateLoading() {
-    return const CircularProgressIndicator.adaptive();
+    return Center(child: const CircularProgressIndicator.adaptive());
   }
 
   Widget _showSearchStateEmpty(SearchStateEmpty state) {
-    return Text('No results for ${state.query}\nTry another keyword!');
+    return Center(child: Text('No results for ${state.query}\nTry another keyword!'));
   }
 
   Widget _showSearchStateError(SearchStateError state) {
-    return Text('Error: ${state.error}');
+    return Center(child: Text('Error: ${state.error}'));
   }
 
   Widget _showSearchStateLoaded(SearchStateLoaded state) {

@@ -102,8 +102,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     // 3. Emit the isLoadingMore flag
     // 4. Get next page and add it to grid
 
-
-    // Important!  state is a getter, copy to local first, then can access its fields
+    // State is a getter, copy to local first, then can access its fields
     final currentState = state;
     // --------------------- 1 ---------------------
     // Use only in SearchStateLoaded State

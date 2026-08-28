@@ -7,6 +7,7 @@ class GiphyApiClient {
   static const _giphyApiKey = String.fromEnvironment('GIPHY_API_KEY');
   static const _apiHost = 'api.giphy.com';
   static const _apiPath = '/v1/gifs/search';
+  static const _apiTrendingPath = '/v1/gifs/trending';
 
   // Using Giphys Search endpoint
   Future<Map<String, dynamic>> search(
@@ -49,7 +50,7 @@ class GiphyApiClient {
     return decoded;
   }
 
-static const _apiTrendingPath = '/v1/gifs/trending';
+
 // Using Giphys Trending endpoint
   Future<Map<String, dynamic>> trending({
     int limit = 25,
